@@ -1,19 +1,17 @@
 services:
   # --------------------------------------------------------------------------------
-  # FULL STACK SERVICE (Python/Flask + React/Vite)
+  # BACKEND SERVICE (Python/Flask)
   # --------------------------------------------------------------------------------
   - type: web
-    name: tradesense-app
+    name: tradesense-backend
     env: python
     plan: free
-    buildCommand: npm install && npm run build && pip install -r backend/requirements.txt
+    buildCommand: pip install -r backend/requirements.txt
     startCommand: gunicorn --chdir backend run:app
     healthCheckPath: /health
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0
-      - key: NODE_VERSION
-        value: 18.17.0
       - key: SECRET_KEY
         generateValue: true
       - key: JWT_SECRET_KEY
@@ -22,6 +20,27 @@ services:
         fromDatabase:
           name: tradesense-db
           property: connectionString
+
+  # --------------------------------------------------------------------------------
+  # FRONTEND SERVICE (Static Site - React/Vite)
+  # --------------------------------------------------------------------------------
+  - type: static
+    name: tradesense-frontend
+    env: static
+    plan: free
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    routes:
+      # Handle SPA routing (fallback to index.html)
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE
+        fromService:
+          type: web
+          name: tradesense-backend
+          property: url
 
 databases:
   # --------------------------------------------------------------------------------
