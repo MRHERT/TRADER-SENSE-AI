@@ -149,12 +149,18 @@ def get_challenge_overview():
         if challenge:
             balance = challenge.current_balance
             starting_balance = challenge.starting_balance
+            equity = challenge.current_equity
+            plan_name = challenge.plan_name
         elif account:
             balance = account.current_equity
             starting_balance = account.starting_equity
+            equity = account.current_equity
+            plan_name = "N/A"
         else:
             balance = VIRTUAL_START_BALANCE
             starting_balance = VIRTUAL_START_BALANCE
+            equity = VIRTUAL_START_BALANCE
+            plan_name = "N/A"
 
         raw_status = account.status if account else (challenge.status if challenge else "ACTIVE")
         status = "ACTIVE" if raw_status == "ONGOING" else raw_status
@@ -168,22 +174,17 @@ def get_challenge_overview():
         today_pnl = sum(t.pnl for t in today_trades)
         daily_pnl_pct = (today_pnl / starting_balance * 100.0) if starting_balance else 0.0
 
-        delta = now - start
-        total_seconds = int(delta.total_seconds())
-        hours = total_seconds // 3600
-        minutes = (total_seconds % 3600) // 60
-        seconds = total_seconds % 60
-
         rows.append(
             {
                 "userId": user.id,
                 "name": user.name,
                 "email": user.email,
                 "balance": balance,
+                "equity": equity,
                 "startingBalance": starting_balance,
+                "planName": plan_name,
                 "status": status,
                 "dailyPnlPct": daily_pnl_pct,
-                "dailyTimer": f"{hours:02d}:{minutes:02d}:{seconds:02d}",
             }
         )
 
@@ -361,6 +362,23 @@ def superadmin_stats():
                 "userSignups": user_signups,
                 "challengeStatusDistribution": challenge_status_distribution,
             },
+        }
+    )
+
+
+@admin_bp.route("/public-stats", methods=["GET"])
+def public_stats():
+    total_users = db.session.query(func.count(User.id)).scalar() or 0
+    active_users = (
+        db.session.query(func.count(func.distinct(Challenge.user_id)))
+        .filter(Challenge.status.in_(["ACTIVE", "SUCCESSFUL", "PASSED"]))
+        .scalar()
+        or 0
+    )
+    return jsonify(
+        {
+            "totalUsers": int(total_users),
+            "activeUsers": int(active_users),
         }
     )
 

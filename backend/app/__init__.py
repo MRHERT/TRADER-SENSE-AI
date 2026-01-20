@@ -1,5 +1,5 @@
 import os
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
@@ -11,9 +11,19 @@ jwt = JWTManager()
 def create_app():
     app = Flask(__name__)
 
-    app.config["SECRET_KEY"] = "dev-secret-key"
-    app.config["JWT_SECRET_KEY"] = "dev-jwt-secret"
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///tradesense_pro.db"
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key")
+    app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY", "dev-jwt-secret")
+    
+    # Use DATABASE_URL if available (Render/Production), else fallback to SQLite
+    database_url = os.environ.get("DATABASE_URL")
+    if database_url:
+        print(f" * Database Configured: {'PostgreSQL' if 'postgres' in database_url else 'Other'}")
+        if database_url.startswith("postgres://"):
+            database_url = database_url.replace("postgres://", "postgresql://", 1)
+    else:
+        print(" * Database Configured: SQLite (Local)")
+    
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_url or "sqlite:///tradesense_pro.sql"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -49,6 +59,15 @@ def create_app():
         if os.path.exists(index_path):
             return send_from_directory(frontend_dist, "index.html")
         return "Frontend build not found. Run 'npm run build' in the frontend project.", 200
+
+    @app.route("/health")
+    def health_check():
+        from sqlalchemy import text
+        try:
+            db.session.execute(text("SELECT 1"))
+            return jsonify({"status": "healthy", "database": "connected"}), 200
+        except Exception as e:
+            return jsonify({"status": "unhealthy", "database": str(e)}), 500
 
     @app.route("/")
     @app.route("/dashboard")

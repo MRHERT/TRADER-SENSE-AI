@@ -11,6 +11,11 @@ import {
   Shield,
   Crown,
   LogOut,
+  Home,
+  Target,
+  Trophy,
+  Users,
+  Zap,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -23,6 +28,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { API_BASE } from "@/config";
 
 interface NavbarProps {
   user?: { name: string; email: string } | null;
@@ -37,11 +43,6 @@ export function Navbar({ user, onLogout }: NavbarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useLanguage();
-
-  const API_BASE =
-    typeof window !== "undefined" && window.location.port === "8080"
-      ? "http://localhost:5000"
-      : "";
 
   useEffect(() => {
     try {
@@ -75,7 +76,8 @@ export function Navbar({ user, onLogout }: NavbarProps) {
           return;
         }
         const data = await response.json();
-        if (data && data.challenge && data.challenge.status === "ACTIVE") {
+        // Allow access to dashboard if challenge exists, regardless of status
+        if (data && data.challenge) {
           setHasActiveChallenge(true);
         } else {
           setHasActiveChallenge(false);
@@ -133,52 +135,64 @@ export function Navbar({ user, onLogout }: NavbarProps) {
   };
 
   const navLinks = [
-    { href: "/", labelKey: "nav_home" as const },
-    { href: "/challenges", labelKey: "nav_challenges" as const },
-    { href: "/leaderboard", labelKey: "nav_leaderboard" as const },
-    { href: "/community", labelKey: "nav_community" as const },
+    { href: "/", labelKey: "nav_home" as const, icon: Home },
+    { href: "/challenges", labelKey: "nav_challenges" as const, icon: Target },
+    { href: "/leaderboard", labelKey: "nav_leaderboard" as const, icon: Trophy },
+    { href: "/community", labelKey: "nav_community" as const, icon: Users },
   ];
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
     <motion.nav
-      initial={{ y: -20, opacity: 0 }}
+      initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl"
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="fixed top-0 left-0 right-0 z-50 px-4 py-4"
     >
-      <div className="container mx-auto px-4">
-            <div className="flex h-16 items-center justify-between">
+      <div className="max-w-7xl mx-auto">
+        <div className="glass-card px-4 md:px-6 py-3 flex items-center justify-between gap-4">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/30 blur-lg rounded-full group-hover:bg-primary/50 transition-colors" />
-              <TrendingUp className="relative h-8 w-8 text-primary" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-[hsl(199,89%,48%)] flex items-center justify-center glow-effect group-hover:scale-110 transition-transform duration-300">
+              <Zap className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="font-display text-xl font-bold">
-              Trade<span className="text-primary">Sense</span> AI
+            <span className="font-display font-bold text-xl">
+              <span className="gradient-text">Trade</span>
+              <span className="text-foreground">Sense</span>
+              <span className="gradient-text-gold"> AI</span>
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  isActive(link.href)
-                    ? "text-primary"
-                    : "text-muted-foreground"
-                }`}
-              >
-                {t(link.labelKey)}
-              </Link>
-            ))}
+          <div className="hidden md:flex items-center gap-7">
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              return (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className={`text-[0.95rem] md:text-base font-medium transition-colors hover:text-primary ${
+                    isActive(link.href)
+                      ? "text-primary"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    {link.labelKey === "nav_leaderboard" ? (
+                      <Trophy className="h-4 w-4" />
+                    ) : (
+                      <Icon className="h-4 w-4" />
+                    )}
+                    <span>{t(link.labelKey)}</span>
+                  </span>
+                </Link>
+              );
+            })}
           </div>
 
           {/* Right Controls */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-3">
             <LanguageSwitcher />
             <ThemeToggle />
 
@@ -265,7 +279,7 @@ export function Navbar({ user, onLogout }: NavbarProps) {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 text-foreground"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
@@ -282,28 +296,38 @@ export function Navbar({ user, onLogout }: NavbarProps) {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="md:hidden py-4 border-t border-border/50"
+            className="md:hidden mt-2 glass-card overflow-hidden"
           >
-            <div className="flex flex-col gap-4">
+            <div className="px-6 py-4 flex flex-col gap-4">
               <div className="flex items-center justify-between mb-2">
                 <LanguageSwitcher />
                 <ThemeToggle />
               </div>
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    isActive(link.href)
-                      ? "text-primary"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  {t(link.labelKey)}
-                </Link>
-              ))}
-              <div className="pt-4 border-t border-border/50 flex flex-col gap-2">
+              {navLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`text-[0.95rem] font-medium transition-colors hover:text-primary ${
+                      isActive(link.href)
+                        ? "text-primary"
+                        : "text-muted-foreground"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      {link.labelKey === "nav_leaderboard" ? (
+                        <Trophy className="h-4 w-4" />
+                      ) : (
+                        <Icon className="h-4 w-4" />
+                      )}
+                      <span>{t(link.labelKey)}</span>
+                    </span>
+                  </Link>
+                );
+              })}
+              <div className="pt-4 border-t border-border flex flex-col gap-2">
                 {effectiveUser ? (
                   <>
                     {hasActiveChallenge && (

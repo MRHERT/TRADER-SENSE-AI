@@ -149,21 +149,17 @@ def checkout():
     if not plan_name or amount <= 0:
         return jsonify({"message": "planName and positive amount are required."}), 400
 
-    existing = Challenge.query.filter_by(user_id=user_id, status="ACTIVE").first()
+    existing = Challenge.query.filter_by(user_id=user_id).first()
     if existing:
         return (
-            jsonify({"message": "You already have an active challenge."}),
+            jsonify({"message": "You already have a challenge (Active, Passed, or Failed). One challenge limit per user."}),
             400,
         )
 
-    if plan_name == "Starter":
-        starting_balance = 5000.0
-    elif plan_name == "Pro":
-        starting_balance = 25000.0
-    elif plan_name == "Elite":
-        starting_balance = 50000.0
-    else:
-        starting_balance = 5000.0
+    # All challenges now start with the same virtual balance,
+    # regardless of selected plan. The difference between plans
+    # is the funded capital after passing the challenge.
+    starting_balance = 5000.0
 
     if method == "PayPal":
         config = PayPalConfig.query.first()

@@ -1,33 +1,39 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Check, Zap, Trophy, Crown, Loader2, CheckCircle2 } from "lucide-react";
+import { Check, Zap, Trophy, Crown, Loader2, CheckCircle2, Play, LayoutDashboard } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { API_BASE } from "@/config";
 
-const API_BASE =
-  typeof window !== "undefined" && window.location.port === "8080"
-    ? "http://localhost:5000"
-    : "";
+type PaymentResponse = {
+  message?: string;
+  error?: string;
+  paypal?: {
+    approvalUrl?: string;
+  };
+};
 
 const plans = [
   {
     name: "Starter",
     price: "200",
     currency: "DH",
+    usdApprox: "~$20 USD",
+    capital: "$5,000",
     nameKey: "pricing_plan_starter_name",
     descriptionKey: "pricing_plan_starter_desc",
     icon: Zap,
     features: [
       "pricing_feature_starting_balance_5k",
+      "pricing_feature_funded_5k",
       "pricing_feature_profit_target_10",
       "pricing_feature_daily_loss_5",
-      "pricing_feature_total_loss_10",
-      "pricing_feature_challenge_period_30",
-      "pricing_feature_basic_analytics",
+      "pricing_feature_ai_signals",
+      "pricing_feature_email_support",
     ] as const,
     popular: false,
   },
@@ -35,17 +41,19 @@ const plans = [
     name: "Pro",
     price: "500",
     currency: "DH",
+    usdApprox: "~$50 USD",
+    capital: "$25,000",
     nameKey: "pricing_plan_pro_name",
     descriptionKey: "pricing_plan_pro_desc",
     icon: Trophy,
     features: [
-      "pricing_feature_starting_balance_25k",
+      "pricing_feature_starting_balance_5k",
+      "pricing_feature_funded_25k",
       "pricing_feature_profit_target_10",
       "pricing_feature_daily_loss_5",
-      "pricing_feature_total_loss_10",
-      "pricing_feature_challenge_period_45",
       "pricing_feature_advanced_analytics",
-      "pricing_feature_ai_signals",
+      "pricing_feature_priority_support_24_7",
+      "pricing_feature_leaderboard_access",
     ] as const,
     popular: true,
   },
@@ -53,18 +61,21 @@ const plans = [
     name: "Elite",
     price: "1000",
     currency: "DH",
+    usdApprox: "~$100 USD",
+    capital: "$100,000",
     nameKey: "pricing_plan_elite_name",
     descriptionKey: "pricing_plan_elite_desc",
     icon: Crown,
     features: [
-      "pricing_feature_starting_balance_50k",
-      "pricing_feature_profit_target_10",
-      "pricing_feature_daily_loss_5",
-      "pricing_feature_total_loss_10",
-      "pricing_feature_challenge_period_60",
+      "pricing_feature_starting_balance_5k",
+      "pricing_feature_funded_100k",
+      "pricing_feature_profit_target_8",
+      "pricing_feature_daily_loss_4",
       "pricing_feature_premium_analytics",
       "pricing_feature_ai_signals",
-      "pricing_feature_priority_support",
+      "pricing_feature_personal_manager",
+      "pricing_feature_fast_withdrawals",
+      "pricing_feature_elite_trader_badge",
     ] as const,
     popular: false,
   },
@@ -76,7 +87,33 @@ export function PricingSection() {
   const [selectedPlan, setSelectedPlan] = useState<(typeof plans)[number] | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogStep, setDialogStep] = useState<"methods" | "processing" | "success">("methods");
+  const [hasChallenge, setHasChallenge] = useState(false);
   const { t } = useLanguage();
+
+  useEffect(() => {
+    const fetchChallenge = async () => {
+      try {
+        const token = typeof window !== "undefined" ? window.localStorage.getItem("ts_token") : null;
+        if (!token) return;
+
+        const response = await fetch(`${API_BASE}/api/challenge/current`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.challenge) {
+            setHasChallenge(true);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to check challenge status", error);
+      }
+    };
+    fetchChallenge();
+  }, []);
 
   const handleStartChallenge = async (planName: string, price: string, method: string) => {
     const token = typeof window !== "undefined" ? window.localStorage.getItem("ts_token") : null;
@@ -104,16 +141,11 @@ export function PricingSection() {
         }),
       });
 
+      const data = (await paymentResponse.json().catch(() => null)) as PaymentResponse | null;
+
       if (!paymentResponse.ok) {
-        const data = await paymentResponse.json().catch(() => ({}));
-        const backendMessage =
-          data && typeof (data as any).message === "string"
-            ? ((data as any).message as string)
-            : "";
-        const backendError =
-          data && typeof (data as any).error === "string"
-            ? ((data as any).error as string)
-            : "";
+        const backendMessage = data?.message ?? "";
+        const backendError = data?.error ?? "";
         const combined =
           backendError && backendMessage
             ? `${backendMessage} (${backendError})`
@@ -127,14 +159,10 @@ export function PricingSection() {
         return;
       }
 
-      const data = await paymentResponse.json().catch(() => null);
-
       if (method === "PayPal") {
         const approvalUrl =
-          data &&
-          (data as any).paypal &&
-          typeof (data as any).paypal.approvalUrl === "string"
-            ? (data as any).paypal.approvalUrl
+          data && data.paypal && typeof data.paypal.approvalUrl === "string"
+            ? data.paypal.approvalUrl
             : null;
 
         if (!approvalUrl) {
@@ -175,7 +203,7 @@ export function PricingSection() {
   };
 
   return (
-    <section className="py-24 relative">
+    <section className="pt-8 pb-24 relative">
       <div className="absolute inset-0 trading-grid opacity-30" />
       <div className="container mx-auto px-4 relative">
         <motion.div
@@ -224,9 +252,17 @@ export function PricingSection() {
                 </CardHeader>
 
                 <CardContent className="flex-1">
-                  <div className="text-center mb-8">
-                    <span className="text-5xl font-display font-bold">{plan.price}</span>
-                    <span className="text-xl text-muted-foreground ml-1">{plan.currency}</span>
+                  <div className="text-center mb-8 space-y-1">
+                    <div>
+                      <span className="text-5xl font-display font-bold">{plan.price}</span>
+                      <span className="text-xl text-muted-foreground ml-1">{plan.currency}</span>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      ({plan.usdApprox})
+                    </div>
+                    <div className="text-sm font-medium">
+                      {t("pricing_capital_label")}: {plan.capital}
+                    </div>
                   </div>
 
                   <ul className="space-y-3">
@@ -244,15 +280,29 @@ export function PricingSection() {
                     <Button
                       variant={plan.popular ? "hero" : "outline"}
                       size="lg"
-                      className="w-full"
+                      className="w-full flex items-center justify-center gap-2"
                       disabled={processingKey !== null}
                       onClick={() => {
+                        if (hasChallenge) {
+                          navigate("/dashboard");
+                          return;
+                        }
                         setSelectedPlan(plan);
                         setDialogStep("methods");
                         setDialogOpen(true);
                       }}
                     >
-                      {t("pricing_start_button")}
+                      {hasChallenge ? (
+                        <>
+                          <LayoutDashboard className="h-4 w-4" />
+                          {t("nav_dashboard")}
+                        </>
+                      ) : (
+                        <>
+                          <Play className="h-4 w-4" />
+                          {t("pricing_start_button")}
+                        </>
+                      )}
                     </Button>
                   </div>
                 </CardFooter>

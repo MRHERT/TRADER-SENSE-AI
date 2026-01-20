@@ -12,6 +12,7 @@ interface ChallengeStatusProps {
   dailyLossLimit: number;
   totalLossLimit: number;
   todayPnL: number;
+  yesterdayEquity?: number;
   positions: { symbol: string; quantity: number; avgPrice: number }[];
 }
 
@@ -24,15 +25,22 @@ export function ChallengeStatus({
   dailyLossLimit,
   totalLossLimit,
   todayPnL,
+  yesterdayEquity,
   positions,
 }: ChallengeStatusProps) {
   const { t } = useLanguage();
-  const profitPercent = ((currentBalance - startingBalance) / startingBalance) * 100;
+  const effectiveStartingBalance = yesterdayEquity || startingBalance;
+  const profitPercent = ((currentEquity - startingBalance) / startingBalance) * 100;
   const targetProgress = (profitPercent / profitTarget) * 100;
-  const dailyLossPercent = (todayPnL / startingBalance) * 100;
-  const totalLossPercent = ((startingBalance - currentBalance) / startingBalance) * 100;
+  // Daily P&L % based on yesterday's equity for display
+  const todayPnLPercent = effectiveStartingBalance > 0 ? (todayPnL / effectiveStartingBalance) * 100 : 0;
+  // Daily Loss Limit check usually based on starting balance or daily starting equity depending on rules
+  // We'll use the same percentage for consistency with the display
+  const dailyLossPercent = todayPnLPercent; 
+  
+  const totalLossPercent = ((startingBalance - currentEquity) / startingBalance) * 100;
 
-  const isProfit = currentBalance >= startingBalance;
+  const isProfit = currentEquity >= startingBalance;
   const isDailyLossWarning = dailyLossPercent < -3;
   const isTotalLossWarning = totalLossPercent > 7;
 

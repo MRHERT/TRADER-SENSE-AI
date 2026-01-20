@@ -10,11 +10,7 @@ import { TrendingUp, Mail, Lock, User, ArrowLeft, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-const API_BASE =
-  typeof window !== "undefined" && window.location.port === "8080"
-    ? "http://localhost:5000"
-    : "";
+import { API_BASE } from "@/config";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),

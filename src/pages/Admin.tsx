@@ -6,20 +6,19 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { API_BASE } from "@/config";
 
 type AdminRow = {
   userId: number;
   name: string;
   email: string;
   balance: number;
+  equity: number;
   startingBalance: number;
+  planName: string;
   status: "ACTIVE" | "SUCCESSFUL" | "FAILED";
   dailyPnlPct: number;
-  dailyTimer: string;
 };
-
-const API_BASE =
-  typeof window !== "undefined" && window.location.port === "8080" ? "http://localhost:5000" : "";
 
 const Admin = () => {
   const [rows, setRows] = useState<AdminRow[]>([]);
@@ -137,10 +136,11 @@ const Admin = () => {
                   <TableHead>{t("admin_col_id")}</TableHead>
                   <TableHead>{t("admin_col_name")}</TableHead>
                   <TableHead>{t("admin_col_email")}</TableHead>
+                  <TableHead>Plan</TableHead>
                   <TableHead>{t("admin_col_virtual_balance")}</TableHead>
+                  <TableHead>Equity</TableHead>
                   <TableHead>{t("admin_col_starting_balance")}</TableHead>
                   <TableHead>{t("admin_col_daily_pnl")}</TableHead>
-                  <TableHead>{t("admin_col_daily_timer")}</TableHead>
                   <TableHead>{t("admin_col_status")}</TableHead>
                   <TableHead>{t("admin_col_override")}</TableHead>
                 </TableRow>
@@ -151,10 +151,11 @@ const Admin = () => {
                     <TableCell>{row.userId}</TableCell>
                     <TableCell>{row.name}</TableCell>
                     <TableCell>{row.email}</TableCell>
+                    <TableCell>{row.planName}</TableCell>
                     <TableCell>${row.balance.toFixed(2)}</TableCell>
+                    <TableCell>${row.equity.toFixed(2)}</TableCell>
                     <TableCell>${row.startingBalance.toFixed(2)}</TableCell>
                     <TableCell>{row.dailyPnlPct.toFixed(2)}%</TableCell>
-                    <TableCell>{row.dailyTimer}</TableCell>
                     <TableCell>
                       <span
                         className={
@@ -207,7 +208,7 @@ const Admin = () => {
                 ))}
                 {!loading && rows.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={9} className="text-center text-sm text-muted-foreground">
+                    <TableCell colSpan={10} className="text-center text-sm text-muted-foreground">
                       {t("admin_no_users")}
                     </TableCell>
                   </TableRow>

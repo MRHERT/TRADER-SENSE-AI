@@ -1,0 +1,54 @@
+services:
+  # --------------------------------------------------------------------------------
+  # BACKEND SERVICE (Python/Flask)
+  # --------------------------------------------------------------------------------
+  - type: web
+    name: tradesense-backend
+    env: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: gunicorn --chdir backend run:app
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tradesense-db
+          property: connectionString
+
+  # --------------------------------------------------------------------------------
+  # FRONTEND SERVICE (Static Site - React/Vite)
+  # --------------------------------------------------------------------------------
+  - type: static
+    name: tradesense-frontend
+    env: static
+    plan: free
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    routes:
+      # Proxy /api requests to the backend service
+      # NOTE: If the backend URL is different, update this destination in Render Dashboard -> Redirects/Rewrites
+      - type: rewrite
+        source: /api/*
+        destination: https://tradesense-backend.onrender.com/api/*
+      # Handle SPA routing (fallback to index.html for non-file paths)
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE
+        value: "" # Empty value relies on the Rewrite Proxy above
+
+databases:
+  # --------------------------------------------------------------------------------
+  # DATABASE (PostgreSQL)
+  # --------------------------------------------------------------------------------
+  - name: tradesense-db
+    plan: free
+    databaseName: tradesense_db
+    user: tradesense_user

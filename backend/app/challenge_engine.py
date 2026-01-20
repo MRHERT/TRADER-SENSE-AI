@@ -23,7 +23,7 @@ challenge_engine_bp = Blueprint("challenge_engine", __name__)
 
 VIRTUAL_START_BALANCE = 5000.0
 DAILY_MAX_LOSS_PCT = 5.0
-TOTAL_MAX_LOSS_PCT = 10.0
+TOTAL_MAX_LOSS_PCT = 5.0
 PROFIT_TARGET_PCT = 10.0
 
 
@@ -37,13 +37,29 @@ def _get_or_create_account(session, user_id: int) -> ChallengeAccount:
             status="ACTIVE",
         )
         session.add(account)
-        session.flush()
+        # session.flush() removed to avoid InvalidRequestError during event handling
     return account
 
 
 def _evaluate_account_for_user(session, user_id: int) -> None:
+    # 1. Get the main Challenge record (Source of Truth for Equity)
+    challenge = (
+        session.query(Challenge)
+        .filter(Challenge.user_id == user_id)
+        .order_by(Challenge.created_at.desc())
+        .first()
+    )
+    
+    if not challenge:
+        return
+
+    # 2. Get the legacy account for status tracking compatibility
     account = _get_or_create_account(session, user_id)
-    starting = account.starting_equity or VIRTUAL_START_BALANCE
+    
+    starting = challenge.starting_balance
+    current_equity = challenge.current_equity
+
+    # 3. Calculate Daily PnL (Realized Only - limitation of no daily snapshot in DB)
     now = datetime.now(timezone.utc)
     start = datetime(year=now.year, month=now.month, day=now.day, tzinfo=timezone.utc)
 
@@ -53,39 +69,37 @@ def _evaluate_account_for_user(session, user_id: int) -> None:
         .filter(Challenge.user_id == user_id, Trade.created_at >= start, Trade.created_at <= now)
         .all()
     )
-    today_pnl = sum(t.pnl for t in today_trades)
+    today_realized_pnl = sum(t.pnl for t in today_trades)
+    
+    # NOTE: Daily Loss here only tracks Realized Loss because we don't have 'start_of_day_equity' in DB.
+    # To fully implement "Daily Equity Drawdown", we would need a new column or table.
+    # We proceed with Realized Daily Loss + Total Equity Loss.
 
-    all_trades = (
-        session.query(Trade)
-        .join(Challenge, Trade.challenge_id == Challenge.id)
-        .filter(Challenge.user_id == user_id)
-        .all()
-    )
-    total_pnl = sum(t.pnl for t in all_trades)
+    daily_loss_pct = abs(min(today_realized_pnl, 0.0)) / starting * 100.0 if today_realized_pnl < 0 else 0.0
+    
+    # Total Loss is based on Current Equity (Realized + Unrealized)
+    total_loss_pct = max(0.0, (starting - current_equity)) / starting * 100.0
+    
+    # Profit Target is based on Current Equity
+    profit_pct = max(0.0, (current_equity - starting)) / starting * 100.0
 
-    equity = starting + total_pnl
-    account.current_equity = equity
-
-    daily_loss_pct = abs(min(today_pnl, 0.0)) / starting * 100.0 if today_pnl < 0 else 0.0
-    total_loss_pct = max(0.0, (starting - equity)) / starting * 100.0
-    profit_pct = max(0.0, (equity - starting)) / starting * 100.0
-
-    if daily_loss_pct >= DAILY_MAX_LOSS_PCT or total_loss_pct >= TOTAL_MAX_LOSS_PCT:
-        account.status = "FAILED"
+    # 4. Determine Status
+    new_status = "ACTIVE"
+    if daily_loss_pct >= DAILY_MAX_LOSS_PCT:
+        new_status = "FAILED"
+    elif total_loss_pct >= TOTAL_MAX_LOSS_PCT:
+        new_status = "FAILED"
     elif profit_pct >= PROFIT_TARGET_PCT:
-        account.status = "SUCCESSFUL"
-    else:
-        account.status = "ACTIVE"
-
-    challenge = (
-        session.query(Challenge)
-        .filter(Challenge.user_id == user_id)
-        .order_by(Challenge.created_at.desc())
-        .first()
-    )
-    if challenge:
-        if account.status in {"ACTIVE", "SUCCESSFUL", "FAILED"}:
-            challenge.status = account.status
+        new_status = "SUCCESSFUL"
+    
+    # 5. Update Status if changed (and not already final)
+    if challenge.status == "ACTIVE":
+        if new_status != "ACTIVE":
+            challenge.status = new_status
+            account.status = new_status
+            session.add(challenge)
+            session.add(account)
+            # session.commit() # Caller handles commit usually, but if called from event, be careful.
 
 
 @event.listens_for(Trade, "after_insert")

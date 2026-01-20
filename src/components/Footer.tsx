@@ -3,15 +3,11 @@ import { TrendingUp, Twitter, MessageCircle, Send, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { API_BASE } from "@/config";
 
 export function Footer() {
   const { t } = useLanguage();
   const [hasActiveChallenge, setHasActiveChallenge] = useState(false);
-
-  const API_BASE =
-    typeof window !== "undefined" && window.location.port === "8080"
-      ? "http://localhost:5000"
-      : "";
 
   useEffect(() => {
     const fetchChallenge = async () => {

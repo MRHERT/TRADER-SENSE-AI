@@ -21,8 +21,20 @@ class Challenge(db.Model):
     current_equity = db.Column(db.Float, nullable=False)
     profit_target = db.Column(db.Float, nullable=False, default=10.0)
     max_daily_loss_pct = db.Column(db.Float, nullable=False, default=5.0)
-    max_total_loss_pct = db.Column(db.Float, nullable=False, default=10.0)
+    max_total_loss_pct = db.Column(db.Float, nullable=False, default=5.0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    yesterday_equity = db.Column(db.Float, nullable=True)
+    last_equity_update = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class Position(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    challenge_id = db.Column(db.Integer, db.ForeignKey("challenge.id"), nullable=False)
+    symbol = db.Column(db.String(20), nullable=False)
+    quantity = db.Column(db.Float, nullable=False)
+    avg_price = db.Column(db.Float, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 class Trade(db.Model):

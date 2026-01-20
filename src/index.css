@@ -54,14 +54,17 @@
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(142 76% 45%) 0%, hsl(160 84% 39%) 100%);
     --gradient-accent: linear-gradient(135deg, hsl(199 89% 48%) 0%, hsl(217 91% 60%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(45 93% 58%) 0%, hsl(38 92% 50%) 100%);
     --gradient-dark: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 40% 96%) 100%);
     --gradient-card: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(210 40% 98%) 100%);
     --gradient-hero: radial-gradient(ellipse at top, hsl(210 40% 96%) 0%, hsl(0 0% 100%) 70%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(142 76% 45% / 0.15) 0%, transparent 70%);
 
     /* Shadows */
     --shadow-glow-green: 0 0 30px hsl(142 76% 45% / 0.3);
     --shadow-glow-blue: 0 0 30px hsl(199 89% 48% / 0.3);
     --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.08);
+    --shadow-glow: 0 0 60px hsl(142 76% 45% / 0.3);
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 222 47% 6%;
@@ -123,12 +126,15 @@
     --glass-border: 217 33% 25% / 0.5;
     --gradient-primary: linear-gradient(135deg, hsl(142 76% 45%) 0%, hsl(160 84% 39%) 100%);
     --gradient-accent: linear-gradient(135deg, hsl(199 89% 48%) 0%, hsl(217 91% 60%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(45 93% 58%) 0%, hsl(38 92% 50%) 100%);
     --gradient-dark: linear-gradient(180deg, hsl(222 47% 8%) 0%, hsl(222 47% 4%) 100%);
     --gradient-card: linear-gradient(135deg, hsl(222 47% 10%) 0%, hsl(222 47% 6%) 100%);
     --gradient-hero: radial-gradient(ellipse at top, hsl(222 47% 12%) 0%, hsl(222 47% 6%) 70%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(142 76% 45% / 0.15) 0%, transparent 70%);
     --shadow-glow-green: 0 0 30px hsl(142 76% 45% / 0.3);
     --shadow-glow-blue: 0 0 30px hsl(199 89% 48% / 0.3);
     --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.4);
+    --shadow-glow: 0 0 60px hsl(142 76% 45% / 0.3);
     --sidebar-background: 222 47% 6%;
     --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 142 76% 45%;
@@ -169,12 +175,30 @@
     @apply bg-card/80 backdrop-blur-xl border border-border/50 shadow-lg;
   }
 
+  .hover-lift {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
+  }
+
   .glass-card-hover {
     @apply glass-card transition-all duration-300 hover:bg-card/90 hover:border-primary/30 hover:shadow-xl;
   }
 
   .gradient-text {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+  }
+
+  .gradient-text-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-gold);
+  }
+
+  .glow-effect {
+    box-shadow: var(--shadow-glow, var(--shadow-glow-green));
   }
 
   .glow-green {

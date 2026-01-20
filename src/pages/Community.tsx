@@ -10,11 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
 import { MessageCircle, Users } from "lucide-react";
-
-const API_BASE =
-  typeof window !== "undefined" && window.location.port === "8080"
-    ? "http://localhost:5000"
-    : "";
+import { API_BASE } from "@/config";
 
 type ChatMessage = {
   id: number;

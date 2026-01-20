@@ -3,6 +3,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from app import db
 from app.models import Challenge
+from app.challenge_engine import _evaluate_account_for_user
 
 challenge_bp = Blueprint("challenge", __name__)
 
@@ -11,6 +12,8 @@ def _get_current_user_id():
     identity = get_jwt_identity()
     return int(identity) if identity is not None else None
 
+
+from datetime import datetime, date
 
 @challenge_bp.route("/current", methods=["GET"])
 @jwt_required()
@@ -28,6 +31,24 @@ def get_current_challenge():
     if not challenge:
         return jsonify({"challenge": None})
 
+    # Logic to handle new day rollover for Daily P&L
+    # If last_equity_update was yesterday (or earlier), snapshot the current_equity as yesterday_equity
+    # In a real system, this should happen at market close or midnight via cron.
+    # Here, we lazy-update on first access of the new day.
+    
+    today = date.today()
+    last_update_date = challenge.last_equity_update.date() if challenge.last_equity_update else today
+    
+    if today > last_update_date:
+        # It's a new day!
+        # Set yesterday_equity to whatever the equity was at the end of last session (current_equity)
+        challenge.yesterday_equity = challenge.current_equity
+        challenge.last_equity_update = datetime.utcnow()
+        db.session.commit()
+    
+    # If yesterday_equity is still None (e.g. fresh challenge), use starting_balance
+    yesterday_equity = challenge.yesterday_equity if challenge.yesterday_equity is not None else challenge.starting_balance
+
     payload = {
         "id": challenge.id,
         "status": challenge.status,
@@ -38,6 +59,7 @@ def get_current_challenge():
         "profitTarget": challenge.profit_target,
         "dailyLossLimit": challenge.max_daily_loss_pct,
         "totalLossLimit": challenge.max_total_loss_pct,
+        "yesterdayEquity": yesterday_equity,
     }
 
     return jsonify({"challenge": payload})
@@ -56,14 +78,10 @@ def start_challenge():
     if not plan_name:
         return jsonify({"message": "planName is required"}), 400
 
-    if plan_name == "Starter":
-        starting_balance = 5000.0
-    elif plan_name == "Pro":
-        starting_balance = 25000.0
-    elif plan_name == "Elite":
-        starting_balance = 50000.0
-    else:
-        starting_balance = 5000.0
+    # All challenges now start with the same virtual balance,
+    # regardless of selected plan. The difference between plans
+    # is the funded capital after passing the challenge.
+    starting_balance = 5000.0
 
     active_existing = Challenge.query.filter_by(
         user_id=user_id, status="ACTIVE"
@@ -83,7 +101,7 @@ def start_challenge():
         current_equity=starting_balance,
         profit_target=10.0,
         max_daily_loss_pct=5.0,
-        max_total_loss_pct=10.0,
+        max_total_loss_pct=5.0,
     )
     db.session.add(challenge)
     db.session.commit()
@@ -121,7 +139,14 @@ def update_balance():
     if not challenge:
         return jsonify({"message": "Challenge not found."}), 404
 
-    challenge.current_balance = float(balance)
+    # Update current_equity instead of current_balance
+    # In the new Binance-style system, current_balance is legacy/Cash-only
+    # and should not be overwritten by Total Equity.
+    challenge.current_equity = float(balance)
+
+    # Evaluate Challenge Rules (Total Loss / Profit Target)
+    # This ensures that equity updates from price changes trigger status updates.
+    _evaluate_account_for_user(db.session, user_id)
 
     db.session.commit()
 

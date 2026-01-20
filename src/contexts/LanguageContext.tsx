@@ -11,9 +11,9 @@ const messages: Dictionary = {
     ar: "الرئيسية",
   },
   nav_challenges: {
-    en: "Challenges",
-    fr: "Challenges",
-    ar: "التحديات",
+    en: "Pricing",
+    fr: "Pricing",
+    ar: "الأسعار",
   },
   nav_leaderboard: {
     en: "Leaderboard",
@@ -146,9 +146,9 @@ const messages: Dictionary = {
     ar: "رسوم بيانية مدعومة بـ TradingView مع كل الأدوات التي يحتاجها المحترفون.",
   },
   challenges_title: {
-    en: "Trading Challenges",
-    fr: "Challenges de trading",
-    ar: "تحديات التداول",
+    en: "Pricing",
+    fr: "Pricing",
+    ar: "الأسعار",
   },
   challenges_subtitle: {
     en: "Prove your trading skills with our prop trading challenges. Pass the evaluation and get funded to trade with real capital.",
@@ -206,9 +206,9 @@ const messages: Dictionary = {
     ar: "اختر تحديك",
   },
   pricing_subtitle: {
-    en: "Start your journey to becoming a funded trader. Pick the challenge that matches your experience level.",
-    fr: "Commencez votre parcours vers un compte financé. Choisissez le challenge adapté à votre niveau.",
-    ar: "ابدأ رحلتك نحو أن تصبح متداولاً ممولاً. اختر التحدي الذي يناسب خبرتك.",
+    en: "Select the plan that matches your goals. Higher capital means greater potential earnings.",
+    fr: "Sélectionnez la formule qui correspond à vos objectifs. Un capital plus élevé signifie un potentiel de gains plus important.",
+    ar: "اختر الخطة التي تتوافق مع أهدافك. رأس مال أكبر يعني إمكانية أرباح أعلى.",
   },
   pricing_most_popular: {
     en: "MOST POPULAR",
@@ -291,29 +291,44 @@ const messages: Dictionary = {
     ar: "أقصى تمويل للمتداولين المحترفين",
   },
   pricing_feature_starting_balance_5k: {
-    en: "$5,000 Starting Balance",
-    fr: "Solde de départ de 5 000 $",
-    ar: "رصيد بداية 5,000 دولار",
+    en: "All plans: $5,000 virtual starting balance",
+    fr: "Tous les plans : solde virtuel de départ de 5 000 $",
+    ar: "جميع الخطط: رصيد افتراضي ابتدائي 5,000 دولار",
   },
-  pricing_feature_starting_balance_25k: {
-    en: "$25,000 Starting Balance",
-    fr: "Solde de départ de 25 000 $",
-    ar: "رصيد بداية 25,000 دولار",
+  pricing_feature_funded_5k: {
+    en: "Get funded with $5,000 after passing the challenge",
+    fr: "Recevez un financement de 5 000 $ après avoir réussi le challenge",
+    ar: "احصل على تمويل بقيمة 5,000 دولار بعد اجتياز التحدي",
   },
-  pricing_feature_starting_balance_50k: {
-    en: "$50,000 Starting Balance",
-    fr: "Solde de départ de 50 000 $",
-    ar: "رصيد بداية 50,000 دولار",
+  pricing_feature_funded_25k: {
+    en: "Get funded with $25,000 after passing the challenge",
+    fr: "Recevez un financement de 25 000 $ après avoir réussi le challenge",
+    ar: "احصل على تمويل بقيمة 25,000 دولار بعد اجتياز التحدي",
+  },
+  pricing_feature_funded_100k: {
+    en: "Get funded with $100,000 after passing the challenge",
+    fr: "Recevez un financement de 100 000 $ après avoir réussi le challenge",
+    ar: "احصل على تمويل بقيمة 100,000 دولار بعد اجتياز التحدي",
   },
   pricing_feature_profit_target_10: {
     en: "10% Profit Target",
     fr: "Objectif de profit de 10 %",
     ar: "هدف ربح 10٪",
   },
+  pricing_feature_profit_target_8: {
+    en: "8% Profit Target",
+    fr: "Objectif de profit de 8 %",
+    ar: "هدف ربح 8٪",
+  },
   pricing_feature_daily_loss_5: {
     en: "5% Daily Max Loss",
     fr: "Perte maximale quotidienne de 5 %",
     ar: "حد الخسارة اليومي 5٪",
+  },
+  pricing_feature_daily_loss_4: {
+    en: "4% Daily Max Loss",
+    fr: "Perte maximale quotidienne de 4 %",
+    ar: "حد الخسارة اليومي 4٪",
   },
   pricing_feature_total_loss_10: {
     en: "10% Total Max Loss",
@@ -359,6 +374,41 @@ const messages: Dictionary = {
     en: "Priority Support",
     fr: "Support prioritaire",
     ar: "دعم أولوية",
+  },
+  pricing_feature_email_support: {
+    en: "Email Support",
+    fr: "Support par e-mail",
+    ar: "دعم عبر البريد الإلكتروني",
+  },
+  pricing_feature_priority_support_24_7: {
+    en: "24/7 Priority Support",
+    fr: "Support prioritaire 24/7",
+    ar: "دعم أولوية على مدار الساعة",
+  },
+  pricing_feature_leaderboard_access: {
+    en: "Leaderboard Access",
+    fr: "Accès au classement",
+    ar: "الوصول إلى لوحة المتصدرين",
+  },
+  pricing_feature_personal_manager: {
+    en: "Personal Manager",
+    fr: "Gestionnaire dédié",
+    ar: "مدير شخصي",
+  },
+  pricing_feature_fast_withdrawals: {
+    en: "Fast Withdrawals",
+    fr: "Retraits rapides",
+    ar: "سحوبات سريعة",
+  },
+  pricing_feature_elite_trader_badge: {
+    en: "Elite Trader Badge",
+    fr: "Insigne de trader élite",
+    ar: "شارة متداول نخبة",
+  },
+  pricing_capital_label: {
+    en: "Funding up to",
+    fr: "Financement jusqu’à",
+    ar: "تمويل حتى",
   },
   pricing_error_title: {
     en: "Error",
@@ -470,6 +520,16 @@ const messages: Dictionary = {
     fr: "Les signaux IA sont à titre indicatif. Effectuez toujours votre propre analyse avant de trader.",
     ar: "إشارات الذكاء الاصطناعي للمرجع فقط. قم دائماً بتحليلك الخاص قبل التداول.",
   },
+  positions_title: {
+    en: "Current Assets",
+    fr: "Actifs actuels",
+    ar: "الأصول الحالية",
+  },
+  positions_empty: {
+    en: "No open positions",
+    fr: "Aucune position ouverte",
+    ar: "لا توجد صفقات مفتوحة",
+  },
   ai_reason_not_enough_data: {
     en: "Not enough data for analysis.",
     fr: "Pas assez de données pour l'analyse.",
@@ -504,6 +564,36 @@ const messages: Dictionary = {
     en: "Analyzing market data...",
     fr: "Analyse des données de marché...",
     ar: "جاري تحليل بيانات السوق...",
+  },
+  ai_signal_rsi_oversold: {
+    en: "RSI is in oversold territory (<30), indicating a potential rebound.",
+    fr: "Le RSI est en zone de survente (<30), indiquant un rebond potentiel.",
+    ar: "مؤشر RSI في منطقة تشبع البيع (<30)، مما يشير إلى ارتداد محتمل."
+  },
+  ai_signal_rsi_overbought: {
+    en: "RSI is in overbought territory (>70), indicating a potential correction.",
+    fr: "Le RSI est en zone de surachat (>70), indiquant une correction potentielle.",
+    ar: "مؤشر RSI في منطقة تشبع الشراء (>70)، مما يشير إلى تصحيح محتمل."
+  },
+  ai_signal_rsi_neutral: {
+    en: "Market conditions are neutral. No clear trend detected.",
+    fr: "Les conditions de marché sont neutres. Aucune tendance claire détectée.",
+    ar: "ظروف السوق محايدة. لم يتم الكشف عن اتجاه واضح."
+  },
+  ai_signal_insufficient_data: {
+    en: "Insufficient historical data for analysis.",
+    fr: "Données historiques insuffisantes pour l'analyse.",
+    ar: "بيانات تاريخية غير كافية للتحليل."
+  },
+  ai_signal_hold_reason: {
+    en: "Consolidating market structure. Wait for breakout.",
+    fr: "Structure de marché en consolidation. Attendez la cassure.",
+    ar: "هيكل السوق في مرحلة تماسك. انتظر الاختراق."
+  },
+  ai_signal_error_fallback: {
+    en: "AI analysis unavailable. Holding position recommended.",
+    fr: "Analyse IA indisponible. Maintien de la position recommandé.",
+    ar: "تحليل الذكاء الاصطناعي غير متوفر. يوصى بالاحتفاظ بالمركز."
   },
   trade_title: {
     en: "Trade",
@@ -1345,6 +1435,737 @@ const messages: Dictionary = {
     fr: "Additional platform settings coming soon…",
     ar: "إعدادات إضافية للمنصة قريباً…",
   },
+  hero_main_text: {
+    en: "Trade Smarter.",
+    fr: "Tradez plus intelligemment.",
+    ar: "تداول بذكاء.",
+  },
+  hero_highlight_text: {
+    en: "Get Funded.",
+    fr: "Obtenez un financement.",
+    ar: "احصل على التمويل.",
+  },
+  hero_description: {
+    en: "Prove your trading skills with our AI-assisted challenge. Hit targets, manage risk, and unlock up to $100,000 in funded capital.",
+    fr: "Prouvez vos compétences de trading avec notre challenge assisté par IA. Atteignez les objectifs, gérez le risque et débloquez jusqu'à 100 000 $ de capital financé.",
+    ar: "أثبت مهاراتك في التداول من خلال تحدينا المدعوم بالذكاء الاصطناعي. حقق الأهداف، أدر المخاطر، واحصل على تمويل يصل إلى 100,000 دولار.",
+  },
+  hero_stat_accuracy: {
+    en: "AI Accuracy",
+    fr: "Précision IA",
+    ar: "دقة الذكاء الاصطناعي",
+  },
+  hero_stat_live_signals: {
+    en: "Live Signals",
+    fr: "Signaux en Direct",
+    ar: "إشارات مباشرة",
+  },
+  features_assist_badge: {
+    en: "Full AI Assistance",
+    fr: "Assistance IA Complète",
+    ar: "مساعدة ذكاء اصطناعي كاملة",
+  },
+  features_title_main: {
+    en: "All Your Decisions",
+    fr: "Toutes vos Décisions",
+    ar: "كل قراراتك",
+  },
+  features_title_highlight: {
+    en: "Guided by AI",
+    fr: "Guidées par l'IA",
+    ar: "موجهة بالذكاء الاصطناعي",
+  },
+  features_desc: {
+    en: "TradeSense AI centralizes signals, trade plans, risk detection, and smart sorting to help you navigate markets with confidence.",
+    fr: "TradeSense AI centralise signaux, plans de trade, détection de risques et tri intelligent pour vous aider à naviguer les marchés avec confiance.",
+    ar: "TradeSense AI يجمع الإشارات، خطط التداول، كشف المخاطر، والفرز الذكي لمساعدتك على التنقل في الأسواق بثقة.",
+  },
+  feature_buy_signals: {
+    en: "Buy Signals",
+    fr: "Signaux Achat",
+    ar: "إشارات الشراء",
+  },
+  feature_buy_desc: {
+    en: "Identify best buying opportunities in real-time",
+    fr: "Identifiez les meilleures opportunités d'achat en temps réel",
+    ar: "حدد أفضل فرص الشراء في الوقت الفعلي",
+  },
+  feature_sell_signals: {
+    en: "Sell Signals",
+    fr: "Signaux Vente",
+    ar: "إشارات البيع",
+  },
+  feature_sell_desc: {
+    en: "Get alerts to optimize your exits",
+    fr: "Recevez des alertes pour optimiser vos sorties de position",
+    ar: "احصل على تنبيهات لتحسين نقاط الخروج",
+  },
+  feature_stop_signals: {
+    en: "Stop Signals",
+    fr: "Signaux Stop",
+    ar: "إشارات الوقف",
+  },
+  feature_stop_desc: {
+    en: "Protect your capital with smart stops",
+    fr: "Protégez votre capital avec des stops intelligents",
+    ar: "احمِ رأس مالك بإيقافات ذكية",
+  },
+  feature_plans: {
+    en: "AI Trade Plans",
+    fr: "Plans de Trade IA",
+    ar: "خطط تداول ذكية",
+  },
+  feature_plans_desc: {
+    en: "Custom strategies for every market",
+    fr: "Stratégies personnalisées pour chaque marché",
+    ar: "استراتيجيات مخصصة لكل سوق",
+  },
+  feature_risk: {
+    en: "Risk Detection",
+    fr: "Détection de Risque",
+    ar: "كشف المخاطر",
+  },
+  feature_risk_desc: {
+    en: "Instant alerts when danger approaches",
+    fr: "Alertes instantanées lorsqu'un danger approche",
+    ar: "تنبيهات فورية عند اقتراب الخطر",
+  },
+  feature_sort: {
+    en: "Smart Sorting",
+    fr: "Tri Intelligent",
+    ar: "فرز ذكي",
+  },
+  feature_sort_desc: {
+    en: "Auto-filter good vs risky trades",
+    fr: "Filtrage automatique des bons trades vs risqués",
+    ar: "تصفية تلقائية للصفقات الجيدة مقابل الخطرة",
+  },
+  feature_detail_forex: {
+    en: "Forex",
+    fr: "Forex",
+    ar: "فوركس",
+  },
+  feature_detail_indices: {
+    en: "Indices",
+    fr: "Indices",
+    ar: "مؤشرات",
+  },
+  feature_detail_alerts: {
+    en: "Multi-timeframe alerts",
+    fr: "Alertes multi-timeframes",
+    ar: "تنبيهات متعددة الأطر الزمنية",
+  },
+  feature_detail_realtime: {
+    en: "Real-Time",
+    fr: "Temps Réel",
+    ar: "وقت فعلي",
+  },
+  feature_detail_winrate: {
+    en: "Avg Winrate",
+    fr: "Winrate moyen",
+    ar: "متوسط معدل الربح",
+  },
+  feature_detail_drawdown: {
+    en: "Avg Drawdown",
+    fr: "Drawdown moyen",
+    ar: "متوسط التراجع",
+  },
+  features_bottom_title: {
+    en: "One Interface, All Your Trading",
+    fr: "Une seule interface, tout votre trading",
+    ar: "واجهة واحدة، كل تداولاتك",
+  },
+  features_bottom_desc: {
+    en: "Combine AI signals, news, community, and MasterClass in one integrated hub. Designed for traders who want to see everything at a glance.",
+    fr: "Combinez signaux IA, actualités, communauté et MasterClass dans un seul hub intégré. Conçu pour les traders qui veulent tout voir en un coup d'œil.",
+    ar: "اجمع بين إشارات الذكاء الاصطناعي، الأخبار، المجتمع، والماستر كلاس في مركز واحد متكامل. مصمم للمتداولين الذين يريدون رؤية كل شيء في لمحة.",
+  },
+  features_stat_time: {
+    en: "Time Saved Daily",
+    fr: "Temps gagné par jour",
+    ar: "الوقت الموفر يومياً",
+  },
+  features_stat_decisions: {
+    en: "Faster Decisions",
+    fr: "Décisions plus rapides",
+    ar: "قرارات أسرع",
+  },
+  news_badge: {
+    en: "Stay Informed",
+    fr: "Restez Informé",
+    ar: "ابق على اطلاع",
+  },
+  news_title_highlight: {
+    en: "News Hub",
+    fr: "Hub d'Actualités",
+    ar: "مركز الأخبار",
+  },
+  news_title_main: {
+    en: "Live",
+    fr: "en Direct",
+    ar: "المباشر",
+  },
+  news_desc: {
+    en: "A complete hub of market news, economic events, and AI summaries to help you anticipate key movements.",
+    fr: "Un hub complet d'informations de marché, d'événements économiques et de résumés IA pour vous aider à anticiper les mouvements clés.",
+    ar: "مركز كامل لأخبار السوق، الأحداث الاقتصادية، وملخصات الذكاء الاصطناعي لمساعدتك على توقع التحركات الرئيسية.",
+  },
+  news_item_financial: {
+    en: "Financial News",
+    fr: "Actualités Financières",
+    ar: "أخبار مالية",
+  },
+  news_item_financial_desc: {
+    en: "Real-time global market feeds",
+    fr: "Flux d'informations en temps réel des marchés mondiaux",
+    ar: "تغذية حية للأسواق العالمية",
+  },
+  news_item_ai: {
+    en: "AI Summaries",
+    fr: "Résumés IA",
+    ar: "ملخصات ذكية",
+  },
+  news_item_ai_desc: {
+    en: "Smart syntheses created by our AI",
+    fr: "Synthèses intelligentes créées par notre IA",
+    ar: "ملخصات ذكية تم إنشاؤها بواسطة الذكاء الاصطناعي لدينا",
+  },
+  news_item_events: {
+    en: "Economic Events",
+    fr: "Événements Économiques",
+    ar: "أحداث اقتصادية",
+  },
+  news_item_events_desc: {
+    en: "Full calendar of important announcements",
+    fr: "Calendrier complet des annonces importantes",
+    ar: "تقويم كامل للإعلانات الهامة",
+  },
+  news_item_alerts: {
+    en: "Custom Alerts",
+    fr: "Alertes Personnalisées",
+    ar: "تنبيهات مخصصة",
+  },
+  news_item_alerts_desc: {
+    en: "Notifications on your favorite assets",
+    fr: "Notifications sur vos actifs favoris",
+    ar: "إشعارات حول أصولك المفضلة",
+  },
+  news_feed_title: {
+    en: "Real-Time Feed",
+    fr: "Flux en Temps Réel",
+    ar: "تغذية في الوقت الفعلي",
+  },
+  news_feed_subtitle: {
+    en: "Market Overview",
+    fr: "Vue d'ensemble des marchés",
+    ar: "نظرة عامة على السوق",
+  },
+  news_feed_live: {
+    en: "Live",
+    fr: "En direct",
+    ar: "مباشر",
+  },
+  news_feed_p1: {
+    en: "Indices, currencies, crypto, and stocks: a news feed designed for traders, highlighting essential info.",
+    fr: "Indices, devises, crypto et actions : un fil d'actus conçu pour les traders, avec les informations essentielles mises en avant.",
+    ar: "المؤشرات، العملات، العملات الرقمية، والأسهم: شريط أخبار مصمم للمتداولين، يبرز المعلومات الأساسية.",
+  },
+  news_feed_p2: {
+    en: "Each news item comes with potential market impact to help you prioritize decisions.",
+    fr: "Chaque news est accompagnée d'un impact potentiel sur les marchés pour vous aider à prioriser vos décisions.",
+    ar: "يأتي كل خبر مع تأثير محتمل على السوق لمساعدتك في تحديد أولويات القرارات.",
+  },
+  news_feed_p3: {
+    en: "AI summaries synthesize the day's important movements, saving you valuable time.",
+    fr: "Les résumés IA synthétisent les mouvements importants de la journée et vous permettent de gagner un temps précieux.",
+    ar: "تلخص ملخصات الذكاء الاصطناعي التحركات المهمة لليوم، مما يوفر لك وقتاً ثميناً.",
+  },
+  news_feed_p4: {
+    en: "Access a consolidated view of trends, risks, and opportunities on your favorite assets.",
+    fr: "Accédez à une vue consolidée des tendances, des risques et des opportunités sur vos actifs favoris.",
+    ar: "احصل على نظرة موحدة للاتجاهات، المخاطر، والفرص المتاحة على أصولك المفضلة.",
+  },
+  news_feed_live_status: {
+    en: "Live",
+    fr: "En direct",
+    ar: "مباشر",
+  },
+  news_feed_live_label: {
+    en: "Live News",
+    fr: "Actualités en direct",
+    ar: "أخبار مباشرة",
+  },
+  news_sample_1_time: {
+    en: "3 min ago",
+    fr: "Il y a 3 min",
+    ar: "منذ 3 دقائق",
+  },
+  news_sample_1_title: {
+    en: "FED leaves rates unchanged, dollar retreats",
+    fr: "La FED laisse ses taux inchangés, le dollar recule",
+    ar: "الفيدرالي يبقي أسعار الفائدة دون تغيير، والدولار يتراجع",
+  },
+  news_sample_1_tag: {
+    en: "MACRO",
+    fr: "MACRO",
+    ar: "ماكرو",
+  },
+  news_sample_2_time: {
+    en: "8 min ago",
+    fr: "Il y a 8 min",
+    ar: "منذ 8 دقائق",
+  },
+  news_sample_2_title: {
+    en: "SP500 tests new key resistance zone",
+    fr: "SP500 teste une nouvelle zone de résistance clé",
+    ar: "SP500 يختبر منطقة مقاومة رئيسية جديدة",
+  },
+  news_sample_2_tag: {
+    en: "INDICES",
+    fr: "INDICES",
+    ar: "مؤشرات",
+  },
+  news_sample_3_time: {
+    en: "15 min ago",
+    fr: "Il y a 15 min",
+    ar: "منذ 15 دقيقة",
+  },
+  news_sample_3_title: {
+    en: "Bitcoin breaks above key $45K resistance",
+    fr: "Bitcoin dépasse la résistance clé des $45K",
+    ar: "البيتكوين يتجاوز مقاومة 45 ألف دولار الرئيسية",
+  },
+  news_sample_3_tag: {
+    en: "CRYPTO",
+    fr: "CRYPTO",
+    ar: "عملات رقمية",
+  },
+  community_landing_badge: {
+    en: "Active Community",
+    fr: "Communauté Active",
+    ar: "مجتمع نشط",
+  },
+  community_landing_title_main: {
+    en: "Community",
+    fr: "Zone",
+    ar: "منطقة",
+  },
+  community_landing_title_highlight: {
+    en: "Zone",
+    fr: "Communautaire",
+    ar: "المجتمع",
+  },
+  community_landing_description: {
+    en: "A social space dedicated to traders where you can exchange, learn, and grow together. Build a strong network around your growth.",
+    fr: "Un espace social dédié aux traders où vous pouvez échanger, apprendre et grandir ensemble. Construisez un réseau solide autour de votre croissance.",
+    ar: "مساحة اجتماعية مخصصة للمتداولين حيث يمكنك التبادل والتعلم والنمو معًا. ابنِ شبكة قوية حول نموك.",
+  },
+  community_landing_feature_1_title: {
+    en: "Chat with Friends",
+    fr: "Discutez avec des Amis",
+    ar: "دردش مع الأصدقاء",
+  },
+  community_landing_feature_1_desc: {
+    en: "Exchange with other passionate traders",
+    fr: "Échangez avec d'autres traders passionnés",
+    ar: "تبادل مع متداولين شغوفين آخرين",
+  },
+  community_landing_feature_2_title: {
+    en: "Meet New Traders",
+    fr: "Rencontrez de Nouveaux Traders",
+    ar: "قابل متداولين جدد",
+  },
+  community_landing_feature_2_desc: {
+    en: "Expand your professional network",
+    fr: "Élargissez votre réseau professionnel",
+    ar: "وسع شبكتك المهنية",
+  },
+  community_landing_feature_3_title: {
+    en: "Share Strategies",
+    fr: "Partagez des Stratégies",
+    ar: "شارك الاستراتيجيات",
+  },
+  community_landing_feature_3_desc: {
+    en: "Publish and discover winning techniques",
+    fr: "Publiez et découvrez des techniques gagnantes",
+    ar: "انشر واكتشف تقنيات رابحة",
+  },
+  community_landing_feature_4_title: {
+    en: "Learn from Experts",
+    fr: "Apprenez des Experts",
+    ar: "تعلم من الخبراء",
+  },
+  community_landing_feature_4_desc: {
+    en: "Access advice from top traders",
+    fr: "Accédez aux conseils des meilleurs traders",
+    ar: "احصل على نصائح من أفضل المتداولين",
+  },
+  why_choose_badge: {
+    en: "Why TradeSense AI?",
+    fr: "Pourquoi TradeSense AI ?",
+    ar: "لماذا TradeSense AI؟",
+  },
+  why_choose_title_1: {
+    en: "A New Way",
+    fr: "Une Nouvelle façon",
+    ar: "طريقة جديدة",
+  },
+  why_choose_title_2: {
+    en: "to Approach Trading",
+    fr: "d'Aborder le Trading",
+    ar: "للتعامل مع التداول",
+  },
+  why_choose_description: {
+    en: "By combining AI, news, and community, TradeSense AI becomes your co-pilot for all your market decisions.",
+    fr: "En combinant IA, actualités et communauté, TradeSense AI devient votre copilote pour toutes vos décisions de marché.",
+    ar: "من خلال الجمع بين الذكاء الاصطناعي والأخبار والمجتمع، يصبح TradeSense AI مساعدك في جميع قرارات السوق.",
+  },
+  why_choose_benefit_1: {
+    en: "A single platform for trading, learning, and community",
+    fr: "Une plateforme unique pour le trading, l'apprentissage et la communauté",
+    ar: "منصة واحدة للتداول والتعلم والمجتمع",
+  },
+  why_choose_benefit_2: {
+    en: "Real-time AI signals and risk alerts",
+    fr: "Signaux IA et alertes de risque en temps réel",
+    ar: "إشارات الذكاء الاصطناعي وتنبيهات المخاطر في الوقت الفعلي",
+  },
+  why_choose_benefit_3: {
+    en: "News + Social + MasterClass in one interface",
+    fr: "Actus + social + MasterClass dans une seule interface",
+    ar: "أخبار + اجتماعي + ماستر كلاس في واجهة واحدة",
+  },
+  why_choose_benefit_4: {
+    en: "Ideal for beginners and experienced traders",
+    fr: "Idéal pour les débutants et les traders expérimentés",
+    ar: "مثالي للمبتدئين والمتداولين ذوي الخبرة",
+  },
+  why_choose_benefit_5: {
+    en: "Helps you make smarter decisions, faster",
+    fr: "Vous aide à prendre des décisions plus intelligentes, plus rapidement",
+    ar: "يساعدك على اتخاذ قرارات أذكى، بشكل أسرع",
+  },
+  cta_title_1: {
+    en: "Ready to Trade",
+    fr: "Prêt à Trade",
+    ar: "مستعد للتداول",
+  },
+  cta_title_2: {
+    en: "Smarter?",
+    fr: "plus Intelligemment ?",
+    ar: "بذكاء أكبر؟",
+  },
+  cta_description: {
+    en: "Start today with TradeSense AI and discover how artificial intelligence can revolutionize your trading approach.",
+    fr: "Commencez dès aujourd'hui avec TradeSense AI et découvrez comment l'intelligence artificielle peut révolutionner votre approche du trading.",
+    ar: "ابدأ اليوم مع TradeSense AI واكتشف كيف يمكن للذكاء الاصطناعي إحداث ثورة في نهجك في التداول.",
+  },
+  cta_button_start: {
+    en: "Start Challenge",
+    fr: "Commencer le Challenge",
+    ar: "ابدأ التحدي",
+  },
+  cta_button_contact: {
+    en: "Contact Team",
+    fr: "Contacter l'Équipe",
+    ar: "تواصل مع الفريق",
+  },
+  cta_footer_text: {
+    en: "✓ 14-day free trial    ✓ No credit card required    ✓ Cancel anytime",
+    fr: "✓ Essai gratuit 14 jours    ✓ Pas de carte bancaire requise    ✓ Annulation à tout moment",
+    ar: "✓ تجربة مجانية لمدة 14 يومًا    ✓ لا حاجة لبطاقة ائتمان    ✓ إلغاء في أي وقت",
+  },
+  masterclass_badge: {
+    en: "Complete Academy",
+    fr: "Académie Complète",
+    ar: "أكاديمية شاملة",
+  },
+  masterclass_title: {
+    en: "Learning Center",
+    fr: "Centre d'Apprentissage",
+    ar: "مركز التعلم",
+  },
+  masterclass_subtitle: {
+    en: "MasterClass",
+    fr: "MasterClass",
+    ar: "ماستر كلاس",
+  },
+  masterclass_description: {
+    en: "Whether you are starting from scratch or mastering advanced strategies, the MasterClass center helps you grow with confidence.",
+    fr: "Que vous partiez de zéro ou que vous maîtrisiez des stratégies avancées, le centre MasterClass vous aide à grandir avec confiance.",
+    ar: "سواء كنت تبدأ من الصفر أو تتقن استراتيجيات متقدمة، يساعدك مركز ماستر كلاس على النمو بثقة.",
+  },
+  masterclass_course_1_title: {
+    en: "Beginner to Advanced Trading",
+    fr: "Trading Débutant à Avancé",
+    ar: "تداول من المبتدئ إلى المتقدم",
+  },
+  masterclass_course_1_desc: {
+    en: "Complete path to master fundamentals",
+    fr: "Parcours complet pour maîtriser les fondamentaux",
+    ar: "مسار كامل لإتقان الأساسيات",
+  },
+  masterclass_course_1_level: {
+    en: "All levels",
+    fr: "Tous niveaux",
+    ar: "جميع المستويات",
+  },
+  masterclass_course_1_lessons: {
+    en: "45 lessons",
+    fr: "45 leçons",
+    ar: "45 درسًا",
+  },
+  masterclass_course_2_title: {
+    en: "Technical Analysis",
+    fr: "Analyse Technique",
+    ar: "التحليل الفني",
+  },
+  masterclass_course_2_desc: {
+    en: "Patterns, indicators and advanced strategies",
+    fr: "Patterns, indicateurs et stratégies avancées",
+    ar: "أنماط، مؤشرات واستراتيجيات متقدمة",
+  },
+  masterclass_course_2_level: {
+    en: "Intermediate",
+    fr: "Intermédiaire",
+    ar: "متوسط",
+  },
+  masterclass_course_2_lessons: {
+    en: "32 lessons",
+    fr: "32 leçons",
+    ar: "32 درسًا",
+  },
+  masterclass_course_3_title: {
+    en: "Risk Management",
+    fr: "Gestion des Risques",
+    ar: "إدارة المخاطر",
+  },
+  masterclass_course_3_desc: {
+    en: "Protect your capital like a pro",
+    fr: "Protégez votre capital comme un professionnel",
+    ar: "احمِ رأس مالك مثل المحترفين",
+  },
+  masterclass_course_3_level: {
+    en: "Essential",
+    fr: "Essentiel",
+    ar: "أساسي",
+  },
+  masterclass_course_3_lessons: {
+    en: "18 lessons",
+    fr: "18 leçons",
+    ar: "18 درسًا",
+  },
+  masterclass_course_4_title: {
+    en: "Live Webinars",
+    fr: "Webinaires en Direct",
+    ar: "ندوات مباشرة",
+  },
+  masterclass_course_4_desc: {
+    en: "Live sessions with market experts",
+    fr: "Sessions live avec des experts du marché",
+    ar: "جلسات حية مع خبراء السوق",
+  },
+  masterclass_course_4_level: {
+    en: "Premium",
+    fr: "Premium",
+    ar: "مميز",
+  },
+  masterclass_course_4_lessons: {
+    en: "Weekly",
+    fr: "Hebdomadaire",
+    ar: "أسبوعي",
+  },
+  masterclass_course_5_title: {
+    en: "AI Assisted Path",
+    fr: "Parcours IA Assisté",
+    ar: "مسار مدعوم بالذكاء الاصطناعي",
+  },
+  masterclass_course_5_desc: {
+    en: "Personalized learning by artificial intelligence",
+    fr: "Apprentissage personnalisé par intelligence artificielle",
+    ar: "تعلم مخصص بواسطة الذكاء الاصطناعي",
+  },
+  masterclass_course_5_level: {
+    en: "Innovative",
+    fr: "Innovant",
+    ar: "مبتكر",
+  },
+  masterclass_course_5_lessons: {
+    en: "Adaptive",
+    fr: "Adaptatif",
+    ar: "تكيفي",
+  },
+  masterclass_course_6_title: {
+    en: "Challenges & Quizzes",
+    fr: "Défis & Quiz",
+    ar: "تحديات واختبارات",
+  },
+  masterclass_course_6_desc: {
+    en: "Test your knowledge and earn rewards",
+    fr: "Testez vos connaissances et gagnez des récompenses",
+    ar: "اختبر معلوماتك واربح مكافآت",
+  },
+  masterclass_course_6_level: {
+    en: "Practical",
+    fr: "Pratique",
+    ar: "عملي",
+  },
+  masterclass_course_6_lessons: {
+    en: "100+ challenges",
+    fr: "100+ défis",
+    ar: "أكثر من 100 تحدي",
+  },
+  masterclass_button: {
+    en: "Explore the Academy",
+    fr: "Explorer l'Académie",
+    ar: "استكشف الأكاديمية",
+  },
+
+  masterclass_badge: {
+    en: "Complete Academy",
+    fr: "Académie Complète",
+    ar: "أكاديمية شاملة",
+  },
+  masterclass_title_main: {
+    en: "Learning Center",
+    fr: "Centre d'Apprentissage",
+    ar: "مركز التعليم",
+  },
+  masterclass_title_highlight: {
+    en: "MasterClass",
+    fr: "MasterClass",
+    ar: "ماستر كلاس",
+  },
+  masterclass_subtitle: {
+    en: "Whether you start from scratch or master advanced strategies, the MasterClass center helps you grow with confidence.",
+    fr: "Que vous partiez de zéro ou que vous maîtrisiez des stratégies avancées, le centre MasterClass vous aide à grandir avec confiance.",
+    ar: "سواء كنت تبدأ من الصفر أو تتقن استراتيجيات متقدمة، مركز الماستر كلاس يساعدك على النمو بثقة.",
+  },
+  masterclass_course_1_title: {
+    en: "Beginner to Advanced Trading",
+    fr: "Trading Débutant à Avancé",
+    ar: "تداول من المبتدئ إلى المتقدم",
+  },
+  masterclass_course_1_desc: {
+    en: "Complete path to master the fundamentals",
+    fr: "Parcours complet pour maîtriser les fondamentaux",
+    ar: "مسار كامل لإتقان الأساسيات",
+  },
+  masterclass_course_2_title: {
+    en: "Technical Analysis",
+    fr: "Analyse Technique",
+    ar: "التحليل الفني",
+  },
+  masterclass_course_2_desc: {
+    en: "Patterns, indicators, and advanced strategies",
+    fr: "Patterns, indicateurs et stratégies avancées",
+    ar: "الأنماط، المؤشرات والاستراتيجيات المتقدمة",
+  },
+  masterclass_course_3_title: {
+    en: "Risk Management",
+    fr: "Gestion des Risques",
+    ar: "إدارة المخاطر",
+  },
+  masterclass_course_3_desc: {
+    en: "Protect your capital like a pro",
+    fr: "Protégez votre capital comme un professionnel",
+    ar: "احمِ رأس مالك مثل المحترفين",
+  },
+  masterclass_course_4_title: {
+    en: "Live Webinars",
+    fr: "Webinaires en Direct",
+    ar: "ندوات مباشرة",
+  },
+  masterclass_course_4_desc: {
+    en: "Live sessions with market experts",
+    fr: "Sessions live avec des experts du marché",
+    ar: "جلسات مباشرة مع خبراء السوق",
+  },
+  masterclass_course_5_title: {
+    en: "AI Assisted Path",
+    fr: "Parcours IA Assisté",
+    ar: "مسار مدعوم بالذكاء الاصطناعي",
+  },
+  masterclass_course_5_desc: {
+    en: "Personalized learning by artificial intelligence",
+    fr: "Apprentissage personnalisé par intelligence artificielle",
+    ar: "تعلم مخصص بواسطة الذكاء الاصطناعي",
+  },
+  masterclass_course_6_title: {
+    en: "Challenges & Quizzes",
+    fr: "Défis & Quiz",
+    ar: "تحديات واختبارات",
+  },
+  masterclass_course_6_desc: {
+    en: "Test your knowledge and earn rewards",
+    fr: "Testez vos connaissances et gagnez des récompenses",
+    ar: "اختبر معلوماتك واربح مكافآت",
+  },
+  masterclass_level_all: {
+    en: "All levels",
+    fr: "Tous niveaux",
+    ar: "جميع المستويات",
+  },
+  masterclass_level_inter: {
+    en: "Intermediate",
+    fr: "Intermédiaire",
+    ar: "متوسط",
+  },
+  masterclass_level_essential: {
+    en: "Essential",
+    fr: "Essentiel",
+    ar: "أساسي",
+  },
+  masterclass_level_premium: {
+    en: "Premium",
+    fr: "Premium",
+    ar: "مميز",
+  },
+  masterclass_level_innovative: {
+    en: "Innovative",
+    fr: "Innovant",
+    ar: "مبتكر",
+  },
+  masterclass_level_practical: {
+    en: "Practical",
+    fr: "Pratique",
+    ar: "عملي",
+  },
+  masterclass_lessons_45: {
+    en: "45 lessons",
+    fr: "45 leçons",
+    ar: "45 درساً",
+  },
+  masterclass_lessons_32: {
+    en: "32 lessons",
+    fr: "32 leçons",
+    ar: "32 درساً",
+  },
+  masterclass_lessons_18: {
+    en: "18 lessons",
+    fr: "18 leçons",
+    ar: "18 درساً",
+  },
+  masterclass_lessons_weekly: {
+    en: "Weekly",
+    fr: "Hebdomadaire",
+    ar: "أسبوعي",
+  },
+  masterclass_lessons_adaptive: {
+    en: "Adaptive",
+    fr: "Adaptatif",
+    ar: "تكيفي",
+  },
+  masterclass_lessons_100: {
+    en: "100+ challenges",
+    fr: "100+ défis",
+    ar: "100+ تحدي",
+  },
+  masterclass_cta: {
+    en: "Explore Academy",
+    fr: "Explorer l'Académie",
+    ar: "استكشف الأكاديمية",
+  },
 };
 
 export type LanguageKey = keyof typeof messages;
@@ -1357,7 +2178,7 @@ interface LanguageContextValue {
 
 const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
 
-export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
+export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [lang, setLangState] = useState<Language>("en");
 
   useEffect(() => {

@@ -317,139 +317,26 @@ export function computePaperEquity(
   prices: Record<string, number>
 ): { equity: number; unrealizedPnL: number } {
   let unrealized = 0;
+  let marketValue = 0;
+
   for (const position of state.positions) {
-    const price = prices[position.symbol];
-    if (!price) continue;
+    // If we don't have a live price for this asset (e.g. looking at another chart),
+    // use the avgPrice so the equity doesn't crash.
+    const price = prices[position.symbol] || position.avgPrice;
+    
     unrealized += (price - position.avgPrice) * position.quantity;
+    marketValue += price * position.quantity;
   }
-  const equity = state.balance + unrealized;
+
+  // Equity = Cash Balance + Total Market Value of Positions
+  const equity = state.balance + marketValue;
   return { equity, unrealizedPnL: unrealized };
-}
-
-export function generateMockCandlestickData(
-  ticker: string,
-  days: number = 100
-): CandlestickData<Time>[] {
-  const data: CandlestickData<Time>[] = [];
-  const now = Math.floor(Date.now() / 1000);
-  const dayInSeconds = 24 * 60 * 60;
-
-  // Different base prices for different tickers
-  const basePrices: Record<string, number> = {
-    AAPL: 185,
-    TSLA: 245,
-    GOOGL: 175,
-    MSFT: 420,
-    "BTC-USD": 95000,
-    "ETH-USD": 3400,
-    "IAM.PA": 120,
-    "ATW.PA": 450,
-  };
-
-  let price = basePrices[ticker] || 100;
-  const volatility = ticker.includes("BTC") || ticker.includes("ETH") ? 0.03 : 0.015;
-
-  for (let i = days; i >= 0; i--) {
-    const time = (now - i * dayInSeconds) as Time;
-    const change = (Math.random() - 0.5) * price * volatility;
-    const open = price;
-    const close = price + change;
-    const high = Math.max(open, close) + Math.random() * price * 0.01;
-    const low = Math.min(open, close) - Math.random() * price * 0.01;
-
-    data.push({
-      time,
-      open: parseFloat(open.toFixed(2)),
-      high: parseFloat(high.toFixed(2)),
-      low: parseFloat(low.toFixed(2)),
-      close: parseFloat(close.toFixed(2)),
-    });
-
-    price = close;
-  }
-
-  return data;
 }
 
 // Get current price from candlestick data
 export function getCurrentPrice(data: CandlestickData<Time>[]): number {
   if (data.length === 0) return 0;
   return data[data.length - 1].close;
-}
-
-// Calculate simple moving average
-export function calculateSMA(data: CandlestickData<Time>[], period: number): number[] {
-  const sma: number[] = [];
-  for (let i = period - 1; i < data.length; i++) {
-    let sum = 0;
-    for (let j = 0; j < period; j++) {
-      sum += data[i - j].close;
-    }
-    sma.push(sum / period);
-  }
-  return sma;
-}
-
-// Generate AI signal based on simple moving average crossover
-export function generateAISignal(
-  data: CandlestickData<Time>[]
-): { signal: "BUY" | "SELL" | "HOLD"; confidence: number; reasonKey: LanguageKey } {
-  if (data.length < 20) {
-    return { signal: "HOLD", confidence: 50, reasonKey: "ai_reason_not_enough_data" };
-  }
-
-  const shortSMA = calculateSMA(data.slice(-20), 5);
-  const longSMA = calculateSMA(data.slice(-20), 15);
-
-  const currentShort = shortSMA[shortSMA.length - 1];
-  const currentLong = longSMA[longSMA.length - 1];
-  const prevShort = shortSMA[shortSMA.length - 2];
-  const prevLong = longSMA[longSMA.length - 2];
-
-  const currentPrice = data[data.length - 1].close;
-  const priceAboveSMA = currentPrice > currentShort;
-
-  // Golden cross (bullish)
-  if (prevShort <= prevLong && currentShort > currentLong) {
-    return {
-      signal: "BUY",
-      confidence: 85,
-      reasonKey: "ai_reason_golden_cross",
-    };
-  }
-
-  // Death cross (bearish)
-  if (prevShort >= prevLong && currentShort < currentLong) {
-    return {
-      signal: "SELL",
-      confidence: 80,
-      reasonKey: "ai_reason_death_cross",
-    };
-  }
-
-  // Bullish trend
-  if (currentShort > currentLong && priceAboveSMA) {
-    return {
-      signal: "BUY",
-      confidence: 70,
-      reasonKey: "ai_reason_bull_trend",
-    };
-  }
-
-  // Bearish trend
-  if (currentShort < currentLong && !priceAboveSMA) {
-    return {
-      signal: "SELL",
-      confidence: 65,
-      reasonKey: "ai_reason_bear_trend",
-    };
-  }
-
-  return {
-    signal: "HOLD",
-    confidence: 55,
-    reasonKey: "ai_reason_consolidation",
-  };
 }
 
 // Mock leaderboard data
